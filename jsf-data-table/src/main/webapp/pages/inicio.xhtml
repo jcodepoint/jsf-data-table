@@ -1,0 +1,78 @@
+<ui:composition template="../templates/master.xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="content">
+		<div style="border-bottom: 1px solid #CCC;padding:10px">
+			<h:panelGrid columns="1" columnClasses="col-1" style="width:100%;">
+				<h:outputText value="JSF dataTable Example" />
+			</h:panelGrid>
+		</div>
+		<div id="container">
+			<h:form id="customerForm">
+				<p />
+				<h:outputText value="DataTable - Ejemplo 1:" styleClass="title" />
+				<p />
+
+				<h:dataTable 
+						id="table-contributors" 
+						value="#{bean.contributors}" 
+						var="c"
+						styleClass="table-style"
+						headerClass="table-header"
+						rowClasses="table-row-odd,table-row-even"
+						columnClasses="table-col-1,table-col-2,table-col-3,table-col-4,table-col-5,table-col-6">
+					<h:column>
+						<f:facet name="header">Nombre</f:facet>
+						<h:outputText value="#{c.name}" rendered="#{not c.editable}" />
+						<h:inputText value="#{c.name}" styleClass="name-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar un nombre." />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Edad</f:facet>
+						<h:outputText value="#{c.age}" rendered="#{not c.editable}" />
+						<h:inputText value="#{c.age}" styleClass="age-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar una edad." />
+					</h:column>
+					<h:column>
+						<f:facet name="header">País</f:facet>
+						<h:outputText value="#{c.country}" rendered="#{not c.editable}" />
+						<h:inputText value="#{c.country}" styleClass="country-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar un país." />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Aporte</f:facet>
+						<h:outputText value="#{c.contribution}" rendered="#{not c.editable}" />
+						<h:inputText value="#{c.contribution}" styleClass="contribution-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar el monto aportado." />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header"></f:facet>
+						<h:commandLink action="#{bean.edit(c)}" value="Editar" rendered="#{not bean.isAnyRowEditable()}" />
+						<h:commandLink action="#{bean.guardar(c)}" value="Guardar" rendered="#{c.editable}" />
+					</h:column>
+					<h:column rendered="#{not c.editable}">
+						<f:facet name="header"></f:facet>
+						<h:commandLink action="#{bean.delete(c)}" value="Eliminar" rendered="#{not bean.isAnyRowEditable()}" onclick="if(!confirm('Desea eliminar este registro?')) return false;" />
+						<h:commandLink action="#{bean.cancelar(c)}" value="Cancelar" rendered="#{c.editable}" immediate="true" />
+					</h:column>
+				</h:dataTable>
+				<h:panelGrid columns="1" columnClasses="agregar-col-0" style="width:100%;">
+					<h:commandLink action="#{bean.agregar()}" value="Agregar" rendered="#{empty bean.contributorAddTemp}" />
+				</h:panelGrid>
+			</h:form>
+			<h:form id="addForm">
+				<h:panelGrid columns="2" columnClasses="agregar-col-1,agregar-col-2" style="width:100%;" rendered="#{not empty bean.contributorAddTemp}">
+					<h:outputText value="Nombre: " />
+					<h:inputText value="#{bean.contributorAddTemp.name}" required="true" requiredMessage="Debe ingresar un nombre." />
+					<h:outputText value="Edad: " />
+					<h:inputText value="#{bean.contributorAddTemp.age}" required="true" requiredMessage="Debe ingresar una edad." />
+					<h:outputText value="País: " />
+					<h:inputText value="#{bean.contributorAddTemp.country}" required="true" requiredMessage="Debe ingresar un país." />
+					<h:outputText value="Aporte: " />
+					<h:inputText value="#{bean.contributorAddTemp.contribution}" required="true" requiredMessage="Debe ingresar el monto aportado." />
+					<h:commandLink action="#{bean.agregarAceptar()}" value="Aceptar" />
+					<h:commandLink action="#{bean.agregarCancelar()}" value="Cancelar" immediate="true" />
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
