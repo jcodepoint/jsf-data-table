@@ -1,6 +1,8 @@
 package com.jcodepoint.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ public class ExampleBean {
 
 	private Contributor temp;
 	private Contributor contributorAddTemp;
+	private Boolean sortAscFlag;
 	
 	@PostConstruct
 	public void init() {
@@ -46,6 +49,15 @@ public class ExampleBean {
 		this.contributorAddTemp = contributorAddTemp;
 	}
 
+	public Boolean getSortAscFlag() {
+		return sortAscFlag;
+	}
+
+	public void setSortAscFlag(Boolean sortAscFlag) {
+		this.sortAscFlag = sortAscFlag;
+	}
+
+	
 	public Boolean isAnyRowEditable() {
 		Optional<Contributor> contributor = 
 				this.contributors.stream().filter(c -> c.getEditable() != null && c.getEditable()).findAny();
@@ -97,6 +109,30 @@ public class ExampleBean {
 	public String agregarCancelar() {
 		this.contributorAddTemp = null;
 		return "inicio";
+	}
+
+	
+	private final Comparator<Contributor> sortAsc = new Comparator<Contributor>() {
+		public int compare(Contributor c1, Contributor c2) {
+			return c1.getName().compareTo(c2.getName());
+		}
+	};
+	
+	private final Comparator<Contributor> sortDesc = new Comparator<Contributor>() {
+		public int compare(Contributor c1, Contributor c2) {
+			return c2.getName().compareTo(c1.getName());
+		}
+	};
+
+	public String sortByName() {
+		if (this.sortAscFlag == null) {
+			this.sortAscFlag = Boolean.TRUE;
+		} else {
+			this.sortAscFlag = !this.sortAscFlag;
+		}
+
+		Collections.sort(this.contributors, this.sortAscFlag ? sortAsc : sortDesc);
+		return "";
 	}
 
 }

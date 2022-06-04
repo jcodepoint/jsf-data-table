@@ -24,7 +24,11 @@
 						rowClasses="table-row-odd,table-row-even"
 						columnClasses="table-col-1,table-col-2,table-col-3,table-col-4,table-col-5,table-col-6">
 					<h:column>
-						<f:facet name="header">Nombre</f:facet>
+						<f:facet name="header">
+							<h:commandLink action="#{bean.sortByName}" style="color: white;">Nombre</h:commandLink>
+							<span style="#{not empty bean.sortAscFlag and bean.sortAscFlag eq true ? 'display:inline' : 'display:none'};color:white">▲</span>
+							<span style="#{not empty bean.sortAscFlag and bean.sortAscFlag eq false ? 'display:inline' : 'display:none'};color:white">▼</span>
+						</f:facet>
 						<h:outputText value="#{c.name}" rendered="#{not c.editable}" />
 						<h:inputText value="#{c.name}" styleClass="name-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar un nombre." />
 					</h:column>
