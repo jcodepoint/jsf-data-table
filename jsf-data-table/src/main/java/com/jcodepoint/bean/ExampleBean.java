@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 //import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -22,6 +23,7 @@ public class ExampleBean {
 	private Contributor temp;
 	private Contributor contributorAddTemp;
 	private Boolean sortAscFlag;
+	private String nameFilter;
 	
 	@PostConstruct
 	public void init() {
@@ -55,6 +57,14 @@ public class ExampleBean {
 
 	public void setSortAscFlag(Boolean sortAscFlag) {
 		this.sortAscFlag = sortAscFlag;
+	}
+
+	public String getNameFilter() {
+		return nameFilter;
+	}
+
+	public void setNameFilter(String nameFilter) {
+		this.nameFilter = nameFilter;
 	}
 
 	
@@ -135,5 +145,26 @@ public class ExampleBean {
 		return "";
 	}
 
+	//ValueChangeEvent event
+	//AjaxBehaviorEvent event
+	
+	public void applyFilter(AjaxBehaviorEvent event) {
+		String input = this.nameFilter.toLowerCase().trim();
+		
+		if (input.equals("")) {
+			for(Contributor c : this.contributors) {
+				c.setDisplayable(Boolean.TRUE);
+			}
+		} else {
+			for(Contributor c : this.contributors) {
+				if (c.getName().toLowerCase().startsWith(input)) {
+					c.setDisplayable(Boolean.TRUE);
+				} else {
+					c.setDisplayable(Boolean.FALSE);
+				}
+			}
+		}
+	}
+	
 }
 

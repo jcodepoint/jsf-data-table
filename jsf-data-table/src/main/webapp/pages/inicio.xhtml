@@ -28,35 +28,38 @@
 							<h:commandLink action="#{bean.sortByName}" style="color: white;">Nombre</h:commandLink>
 							<span style="#{not empty bean.sortAscFlag and bean.sortAscFlag eq true ? 'display:inline' : 'display:none'};color:white">▲</span>
 							<span style="#{not empty bean.sortAscFlag and bean.sortAscFlag eq false ? 'display:inline' : 'display:none'};color:white">▼</span>
+							<h:inputText value="#{bean.nameFilter}" style="margin-top: 25px;">
+								<f:ajax event="keyup" execute="@this" listener="#{bean.applyFilter}" render="customerForm:table-contributors" />
+							</h:inputText>
 						</f:facet>
-						<h:outputText value="#{c.name}" rendered="#{not c.editable}" />
-						<h:inputText value="#{c.name}" styleClass="name-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar un nombre." />
+						<h:outputText value="#{c.name}" rendered="#{c.displayable and not c.editable}" />
+						<h:inputText value="#{c.name}" styleClass="name-editor" rendered="#{c.displayable and c.editable}" required="true" requiredMessage="Debe ingresar un nombre." />
 					</h:column>
 					<h:column>
 						<f:facet name="header">Edad</f:facet>
-						<h:outputText value="#{c.age}" rendered="#{not c.editable}" />
-						<h:inputText value="#{c.age}" styleClass="age-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar una edad." />
+						<h:outputText value="#{c.age}" rendered="#{c.displayable and not c.editable}" />
+						<h:inputText value="#{c.age}" styleClass="age-editor" rendered="#{c.displayable and c.editable}" required="true" requiredMessage="Debe ingresar una edad." />
 					</h:column>
 					<h:column>
 						<f:facet name="header">País</f:facet>
-						<h:outputText value="#{c.country}" rendered="#{not c.editable}" />
-						<h:inputText value="#{c.country}" styleClass="country-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar un país." />
+						<h:outputText value="#{c.country}" rendered="#{c.displayable and not c.editable}" />
+						<h:inputText value="#{c.country}" styleClass="country-editor" rendered="#{c.displayable and c.editable}" required="true" requiredMessage="Debe ingresar un país." />
 					</h:column>
 					<h:column>
 						<f:facet name="header">Aporte</f:facet>
-						<h:outputText value="#{c.contribution}" rendered="#{not c.editable}" />
-						<h:inputText value="#{c.contribution}" styleClass="contribution-editor" rendered="#{c.editable}" required="true" requiredMessage="Debe ingresar el monto aportado." />
+						<h:outputText value="#{c.contribution}" rendered="#{c.displayable and not c.editable}" />
+						<h:inputText value="#{c.contribution}" styleClass="contribution-editor" rendered="#{c.displayable and c.editable}" required="true" requiredMessage="Debe ingresar el monto aportado." />
 					</h:column>
 
 					<h:column>
 						<f:facet name="header"></f:facet>
-						<h:commandLink action="#{bean.edit(c)}" value="Editar" rendered="#{not bean.isAnyRowEditable()}" />
-						<h:commandLink action="#{bean.guardar(c)}" value="Guardar" rendered="#{c.editable}" />
+						<h:commandLink action="#{bean.edit(c)}" value="Editar" rendered="#{c.displayable and not bean.isAnyRowEditable()}" />
+						<h:commandLink action="#{bean.guardar(c)}" value="Guardar" rendered="#{c.displayable and c.editable}" />
 					</h:column>
 					<h:column rendered="#{not c.editable}">
 						<f:facet name="header"></f:facet>
-						<h:commandLink action="#{bean.delete(c)}" value="Eliminar" rendered="#{not bean.isAnyRowEditable()}" onclick="if(!confirm('Desea eliminar este registro?')) return false;" />
-						<h:commandLink action="#{bean.cancelar(c)}" value="Cancelar" rendered="#{c.editable}" immediate="true" />
+						<h:commandLink action="#{bean.delete(c)}" value="Eliminar" rendered="#{c.displayable and not bean.isAnyRowEditable()}" onclick="if(!confirm('Desea eliminar este registro?')) return false;" />
+						<h:commandLink action="#{bean.cancelar(c)}" value="Cancelar" rendered="#{c.displayable and c.editable}" immediate="true" />
 					</h:column>
 				</h:dataTable>
 				<h:panelGrid columns="1" columnClasses="agregar-col-0" style="width:100%;">

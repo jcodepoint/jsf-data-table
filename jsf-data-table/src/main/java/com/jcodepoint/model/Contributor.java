@@ -13,9 +13,10 @@ public class Contributor implements Serializable {
 	private Double contribution;
 	
 	private Boolean editable;
+	private Boolean displayable;
 	
 	public Contributor() {
-		
+		this.displayable = Boolean.TRUE;
 	}
 	
 	public Contributor(Integer id, String name, Integer age, String country, Double contribution) {
@@ -24,6 +25,7 @@ public class Contributor implements Serializable {
 		this.age = age;
 		this.country = country;
 		this.contribution = contribution;
+		this.displayable = Boolean.TRUE;
 	}
 	
 	public Contributor(Contributor c) {
@@ -32,6 +34,7 @@ public class Contributor implements Serializable {
 		this.age = c.getAge();
 		this.country = c.getCountry();
 		this.contribution = c.getContribution();
+		this.displayable = Boolean.TRUE;
 	}
 	
 	
@@ -81,6 +84,14 @@ public class Contributor implements Serializable {
 
 	public void setEditable(Boolean editable) {
 		this.editable = editable;
+	}
+
+	public Boolean getDisplayable() {
+		return displayable;
+	}
+
+	public void setDisplayable(Boolean displayable) {
+		this.displayable = displayable;
 	}
 
 }
